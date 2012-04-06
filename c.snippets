@@ -4,11 +4,106 @@ ${1:callback} (GObject *source,
     GAsyncResult *result,
     gpointer user_data)
 {
-    GError *error = NULL;
+  GError *error = NULL;
 
-    if (!${2:function_finis} (source, result, &error))
-      {
-        g_error_free (error);
-      }
+  if (!${2:function_finis} (source, result, &error))
+    {
+      g_error_free (error);
+    }
 }
+endsnippet
+
+snippet doc "gtk-doc documentation" !b
+/**
+ * ${1:TODO}:
+ * @self: ${2:TODO}
+ *
+ * ${3:TODO}
+ *
+ * Since: UNRELEASED
+ */
+endsnippet
+
+snippet prop "GObject property" !b
+/**
+ * ${1:ObjectType}:${2:name}:
+ *
+ * TODO
+ *
+ * Since: UNRELEASED
+ */
+spec = g_param_spec_${3:type} ("$2", "$2",
+    "${4:description}",
+    ${5:default_value},
+    ${6:G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS});
+g_object_class_install_property (oclass, PROP_${7}, spec);
+endsnippet
+
+snippet getter "Property getter helper" !b
+/**
+ * ${1:prefix}_get_${2:prop}:
+ * @self: a #${3:type}
+ *
+ * Return the #$3:$2 property
+ *
+ * Returns: the value of #$3:$2 property
+ *
+ * Since: UNRELEASED
+ */
+${4:return-type}
+$1_get_$2 ($3 *self)
+{
+  return self->priv->$2;
+}
+endsnippet
+
+snippet lgpl "LGPL license" !b
+`!p
+
+snip.rv = '''/*
+ * %s
+ *
+ * Copyright (C) 2012 Collabora Ltd. <http://www.collabora.co.uk/>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */''' % snip.fn
+`
+endsnippet
+
+snippet emit "Emit a GObject signal" !b
+g_signal_emit (self, signals[SIG_$1], 0, ${2:arg});
+endsnippet
+
+snippet signal "GObject signal definitation" !b
+/**
+ * ${1:ObjectType}::${2:signal-name}:
+ * @self: a #$1
+ *
+ * TODO
+ *
+ * Since: UNRELEASED
+ */
+signals[SIG_$3] = g_signal_new ("$2",
+    G_OBJECT_CLASS_TYPE (klass),
+    G_SIGNAL_RUN_LAST,
+    0, NULL, NULL, NULL,
+    G_TYPE_NONE,
+    ${4:0}${5:, ARG_TYPE});
+endsnippet
+
+snippet connect "Connect a GObject signal" !b
+g_signal_connect (${1:object}, "${2:signal}",
+    G_CALLBACK (${3:callback}), ${4:self});
 endsnippet

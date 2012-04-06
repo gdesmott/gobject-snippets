@@ -1,0 +1,255 @@
+global !p
+def magic_replace(snip, path, text):
+    # Projects not including their prefix in file names.
+    HARDCODED_PREFIXES = [('telepathy-glib', 'tp')]
+
+    fct_prefix = snip.basename.replace('-', '_')
+
+    # Add hardcoded prefix if needed
+    for name, prefix in HARDCODED_PREFIXES:
+      if name in path:
+        fct_prefix = ("%s_%s") % (prefix, fct_prefix)
+        break
+
+    upper_case_name = fct_prefix.upper()
+
+    l = fct_prefix.split('_')
+    l = map(unicode.title, l)
+    type_name = ''.join(l)
+
+    l = upper_case_name.split('_')
+    l.insert(1, 'TYPE')
+    type_macro = '_'.join(l)
+
+    l = upper_case_name.split('_')
+    l.insert(1, 'IS')
+    is_macro = '_'.join(l)
+
+    header_file = '%s.h' % snip.basename
+
+    text = text.replace('$UPPER_CASE_NAME', upper_case_name)
+    text = text.replace('$ObjectType', type_name)
+    text = text.replace('$fct_prefix', fct_prefix)
+    text = text.replace('$TYPE_MACRO', type_macro)
+    text = text.replace('$IS_MACRO', is_macro)
+    text = text.replace('$header-file', header_file)
+    text = text.replace('$file-basename', snip.basename)
+
+    return text
+endglobal
+
+snippet gheader "GObject Header" !b
+`!p
+
+result = '''
+#ifndef __$UPPER_CASE_NAME_H__
+#define __$UPPER_CASE_NAME_H__
+
+#include <glib-object.h>
+
+G_BEGIN_DECLS
+
+typedef struct _$ObjectType $ObjectType;
+typedef struct _$ObjectTypeClass $ObjectTypeClass;
+typedef struct _$ObjectTypePriv $ObjectTypePriv;
+
+struct _$ObjectTypeClass
+{
+  /*<private>*/
+  GObjectClass parent_class;
+};
+
+struct _$ObjectType
+{
+  /*<private>*/
+  GObject parent;
+  $ObjectTypePriv *priv;
+};
+
+GType $fct_prefix_get_type (void);
+
+/* TYPE MACROS */
+#define $TYPE_MACRO \\
+  ($fct_prefix_get_type ())
+#define $UPPER_CASE_NAME(obj) \\
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), \\
+    $TYPE_MACRO, \\
+    $ObjectType))
+#define $UPPER_CASE_NAME_CLASS(klass) \\
+  (G_TYPE_CHECK_CLASS_CAST((klass), \\
+    $TYPE_MACRO, \\
+    $ObjectTypeClass))
+#define $IS_MACRO(obj) \\
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), \\
+    $TYPE_MACRO))
+#define $IS_MACRO_CLASS(klass) \\
+  (G_TYPE_CHECK_CLASS_TYPE((klass), \\
+    $TYPE_MACRO))
+#define $UPPER_CASE_NAME_GET_CLASS(obj) \\
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), \\
+    $TYPE_MACRO, \\
+    $ObjectTypeClass))
+
+$ObjectType * $fct_prefix_new (void);
+
+G_END_DECLS
+
+#endif /* #ifndef __$UPPER_CASE_NAME_H__*/'''
+
+snip.rv = magic_replace(snip, path, result)
+`
+endsnippet
+
+
+snippet gobject "GObject Code" !b
+`!p
+
+result = '''
+#include "config.h"
+
+#include "$header-file"
+
+/**
+ * SECTION: $file-basename
+ * @title: $ObjectType
+ * @short_description: TODO
+ *
+ * TODO
+ */
+
+/**
+ * $ObjectType:
+ *
+ * Data structure representing a #$ObjectType.
+ *
+ * Since: UNRELEASED
+ */
+
+/**
+ * $ObjectTypeClass:
+ *
+ * The class of a #$ObjectType.
+ *
+ * Since: UNRELEASED
+ */
+
+G_DEFINE_TYPE ($ObjectType, $fct_prefix, G_TYPE_OBJECT)
+
+enum
+{
+  PROP_FIRST_PROP = 1,
+  N_PROPS
+};
+
+/*
+enum
+{
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL];
+*/
+
+struct _$ObjectTypePriv
+{
+  gpointer badger;
+};
+
+static void
+$fct_prefix_get_property (GObject *object,
+    guint property_id,
+    GValue *value,
+    GParamSpec *pspec)
+{
+  //$ObjectType *self = $UPPER_CASE_NAME (object);
+
+  switch (property_id)
+    {
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
+$fct_prefix_set_property (GObject *object,
+    guint property_id,
+    const GValue *value,
+    GParamSpec *pspec)
+{
+  //$ObjectType *self = $UPPER_CASE_NAME (object);
+
+  switch (property_id)
+    {
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+        break;
+    }
+}
+
+static void
+$fct_prefix_constructed (GObject *object)
+{
+  //$ObjectType *self = $UPPER_CASE_NAME (object);
+  void (*chain_up) (GObject *) =
+      ((GObjectClass *) $fct_prefix_parent_class)->constructed;
+
+  if (chain_up != NULL)
+    chain_up (object);
+}
+
+static void
+$fct_prefix_dispose (GObject *object)
+{
+  //$ObjectType *self = $UPPER_CASE_NAME (object);
+  void (*chain_up) (GObject *) =
+      ((GObjectClass *) $fct_prefix_parent_class)->dispose;
+
+  if (chain_up != NULL)
+    chain_up (object);
+}
+
+static void
+$fct_prefix_finalize (GObject *object)
+{
+  //$ObjectType *self = $UPPER_CASE_NAME (object);
+  void (*chain_up) (GObject *) =
+      ((GObjectClass *) $fct_prefix_parent_class)->finalize;
+
+  if (chain_up != NULL)
+    chain_up (object);
+}
+
+static void
+$fct_prefix_class_init (
+    $ObjectTypeClass *klass)
+{
+  GObjectClass *oclass = G_OBJECT_CLASS (klass);
+  //GParamSpec *spec;
+
+  oclass->get_property = $fct_prefix_get_property;
+  oclass->set_property = $fct_prefix_set_property;
+  oclass->constructed = $fct_prefix_constructed;
+  oclass->dispose = $fct_prefix_dispose;
+  oclass->finalize = $fct_prefix_finalize;
+
+  g_type_class_add_private (klass, sizeof ($ObjectTypePriv));
+}
+
+static void
+$fct_prefix_init ($ObjectType *self)
+{
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
+      $TYPE_MACRO, $ObjectTypePriv);
+}
+
+$ObjectType *
+$fct_prefix_new (void)
+{
+  return g_object_new ($TYPE_MACRO,
+      NULL);
+}'''
+
+snip.rv = magic_replace(snip, path, result)
+`
+endsnippet
