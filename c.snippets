@@ -1,0 +1,14 @@
+snippet cb "GIO Async Callback definition" !b
+static void
+${1:callback} (GObject *source,
+    GAsyncResult *result,
+    gpointer user_data)
+{
+    GError *error = NULL;
+
+    if (!${2:function_finis} (source, result, &error))
+      {
+        g_error_free (error);
+      }
+}
+endsnippet
