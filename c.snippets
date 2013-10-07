@@ -107,3 +107,16 @@ snippet connect "Connect a GObject signal" !b
 g_signal_connect_object (${1:object}, "${2:signal}",
     G_CALLBACK ($2_cb), ${4:self}, 0);
 endsnippet
+
+snippet itl "Iterate a GList" !b
+for (l = ${1:list}; l != NULL; l = g_list_next (l))
+  {
+    ${2:type} = l->data;
+
+    ${3}
+  }
+endsnippet
+
+snippet p "priv pointer" i
+self->priv->
+endsnippet
