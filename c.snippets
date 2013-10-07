@@ -104,6 +104,6 @@ signals[SIG_$3] = g_signal_new ("$2",
 endsnippet
 
 snippet connect "Connect a GObject signal" !b
-g_signal_connect (${1:object}, "${2:signal}",
-    G_CALLBACK (${3:callback}), ${4:self});
+g_signal_connect_object (${1:object}, "${2:signal}",
+    G_CALLBACK ($2_cb), ${4:self}, 0);
 endsnippet
