@@ -194,8 +194,7 @@ $fct_prefix_constructed (GObject *object)
   void (*chain_up) (GObject *) =
       ((GObjectClass *) $fct_prefix_parent_class)->constructed;
 
-  if (chain_up != NULL)
-    chain_up (object);
+  chain_up (object);
 }
 
 static void
@@ -205,8 +204,7 @@ $fct_prefix_dispose (GObject *object)
   void (*chain_up) (GObject *) =
       ((GObjectClass *) $fct_prefix_parent_class)->dispose;
 
-  if (chain_up != NULL)
-    chain_up (object);
+  chain_up (object);
 }
 
 static void
@@ -216,8 +214,7 @@ $fct_prefix_finalize (GObject *object)
   void (*chain_up) (GObject *) =
       ((GObjectClass *) $fct_prefix_parent_class)->finalize;
 
-  if (chain_up != NULL)
-    chain_up (object);
+  chain_up (object);
 }
 
 static void
