@@ -6,7 +6,10 @@ and configure it first. I use Vundle ( https://github.com/gmarik/Vundle.vim )
 to manage vim plugins but it's not mandatory.
 
 The content of this repo should be located in
+
     ~/.vim/UltiSnips
+
 so you should have something like:
+
     ~/.vim/UltiSnips/c.snippets
     ~/.vim/UltiSnips/c
