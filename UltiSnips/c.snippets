@@ -119,3 +119,13 @@ endsnippet
 snippet p "priv pointer" i
 self->priv->
 endsnippet
+
+snippet gsttest "Create a test using libgstcheck" !b
+GST_START_TEST (${1:,test_name})
+{
+	${3}
+}
+
+GST_END_TEST;
+
+endsnippet
