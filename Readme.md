@@ -23,7 +23,6 @@ so you should have something like:
 ## Create a new GObject
 
 To create a new GObject BadgerMushroom:
-- create a new file *badger-mushroom.h* type **gheader<TAB>** to generate the
+- create a new file *badger-mushroom.h* type **gheader** then the **Tab** key to generate the
 object header
-- create a new file *badger-mushroom.c* type **gobject<TAB>** to generate the
-object code
+- create a new file *badger-mushroom.c* type **gobject** then the **Tab** key to generate the object code
