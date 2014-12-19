@@ -1,5 +1,7 @@
 # UltiSnips C snippets helping to write GObject code
 
+## Installation
+
 Those snippets use UltiSnips (
 http://www.vim.org/scripts/script.php?script_id=2715 ) so you should install
 and configure it first. I use Vundle ( https://github.com/gmarik/Vundle.vim )
@@ -17,3 +19,11 @@ so you should have something like:
 
     ~/.vim/UltiSnips/c.snippets
     ~/.vim/UltiSnips/c
+
+## Create a new GObject
+
+To create a new GObject BadgerMushroom:
+- create a new file *badger-mushroom.h* type **gheader<TAB>** to generate the
+object header
+- create a new file *badger-mushroom.c* type **gobject<TAB>** to generate the
+object code
